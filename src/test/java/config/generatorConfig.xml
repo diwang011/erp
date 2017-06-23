@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="D:\omni\omniv4\omni\WebContent\WEB-INF\lib\mysql-connector-java-5.1.38.jar" />
+	<context id="omniTables">
+		<plugin type="org.mybatis.generator.plugins.AddLimitOffsetPlugin" />
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/test" userId="root"
+			password="P@55w0rd" />
+		<javaModelGenerator targetPackage="com.erp.db.model"
+			targetProject="erp/src/main/java/" />
+		<sqlMapGenerator targetPackage="com.erp.db.mapper"
+			targetProject="erp/src/main/java/" />
+		<javaClientGenerator targetPackage="com.erp.db.mapper"
+			targetProject="erp/src/main/java/" type="XMLMAPPER" />
+
+<!-- 		<table schema="test" tableName="userinfo" -->
+<!--             domainObjectName="UserInfo"> -->
+<!--             <property name="useActualColumnNames" value="true" /> -->
+<!--             <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
+<!--         </table> -->
+        
+		<table schema="test" tableName="item"
+            domainObjectName="Item">
+            <property name="useActualColumnNames" value="true" />
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+        
+<!--         <table schema="test" tableName="orderitem" -->
+<!--             domainObjectName="OrderItem"> -->
+<!--             <property name="useActualColumnNames" value="true" /> -->
+<!--             <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
+<!--         </table> -->
+<!--         <table schema="test" tableName="feed" -->
+<!--             domainObjectName="Feed"> -->
+<!--             <property name="useActualColumnNames" value="true" /> -->
+<!--             <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
+<!--         </table> -->
+        
+<!--         <table schema="test" tableName="orders" -->
+<!--             domainObjectName="Orders"> -->
+<!--             <property name="useActualColumnNames" value="true" /> -->
+<!--             <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
+<!--         </table> -->
+	</context>
+</generatorConfiguration>
