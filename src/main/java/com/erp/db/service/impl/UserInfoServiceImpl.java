@@ -1,5 +1,7 @@
 package com.erp.db.service.impl;
 
+import com.erp.biz.api.handle.FeedHandele;
+import com.erp.biz.api.model.response.FeedRecordResponse;
 import com.erp.db.mapper.UserInfoMapper;
 import com.erp.db.model.UserInfo;
 import com.erp.db.model.UserInfoExample;
@@ -96,5 +98,28 @@ public class UserInfoServiceImpl implements IUserInfoService
             return null;
         }
         return userMap.get(token);
+    }
+
+    @Override
+    public String register(UserInfo user) throws Exception
+    {
+        String consumerId = user.getConsumerId();
+        String privateEncodedStr = user.getPrivateKey();
+        FeedHandele FeedHandele = new FeedHandele(consumerId, privateEncodedStr);
+        FeedRecordResponse res = null;
+        try
+        {
+            res = FeedHandele.getFeedsv3(null);
+        }
+        catch (Exception e1)
+        {
+            throw e1;
+        }
+        int i = userInfoMapper.insert(user);
+        if (i != 1)
+        {
+            return null;
+        }
+        return login(user);
     }
 }

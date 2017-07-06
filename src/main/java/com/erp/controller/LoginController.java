@@ -57,4 +57,29 @@ public class LoginController extends BaseController
         return response;
     }
 
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public @ResponseBody BaseResponse<String> register(@RequestBody BaseRequest<UserInfo> request)
+    {
+        LOGGER.info("register start");
+        BaseResponse<String> response = new BaseResponse<String>();
+        String res = null;
+        try
+        {
+            UserInfo userInfo = request.getData();
+            if (userInfo == null)
+            {
+                response.setError("Parameter error!");
+            }
+            res = userInfoService.register(userInfo);
+        }
+        catch (Exception e)
+        {
+            LOGGER.error(e);
+            response.setError("register error," + e.getMessage());
+        }
+        response.setData(res);
+        LOGGER.info("register end");
+        return response;
+    }
+
 }

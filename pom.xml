@@ -251,12 +251,12 @@
 			</resource>
 		</resources>
 	</build>
-	<repositories>
-		<repository>
-			<id>spring-milestone</id>
-			<url>http://repo.spring.io/libs-release</url>
-		</repository>
-	</repositories>
+<!-- 	<repositories> -->
+<!-- 		<repository> -->
+<!-- 			<id>spring-milestone</id> -->
+<!-- 			<url>http://repo.spring.io/libs-release</url> -->
+<!-- 		</repository> -->
+<!-- 	</repositories> -->
 	<!--配置远程仓库地址 -->
 	<!-- <repositories> -->
 	<!-- <repository> -->
