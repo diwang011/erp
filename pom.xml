@@ -213,6 +213,12 @@
 			<artifactId>commons-collections4</artifactId>
 			<version>4.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -251,12 +257,12 @@
 			</resource>
 		</resources>
 	</build>
-<!-- 	<repositories> -->
-<!-- 		<repository> -->
-<!-- 			<id>spring-milestone</id> -->
-<!-- 			<url>http://repo.spring.io/libs-release</url> -->
-<!-- 		</repository> -->
-<!-- 	</repositories> -->
+	<!-- <repositories> -->
+	<!-- <repository> -->
+	<!-- <id>spring-milestone</id> -->
+	<!-- <url>http://repo.spring.io/libs-release</url> -->
+	<!-- </repository> -->
+	<!-- </repositories> -->
 	<!--配置远程仓库地址 -->
 	<!-- <repositories> -->
 	<!-- <repository> -->

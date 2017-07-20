@@ -2,6 +2,7 @@ package com.erp.controller;
 
 import com.erp.biz.IFeedBizService;
 import com.erp.db.model.Feed;
+import com.erp.db.model.UserInfo;
 import com.erp.model.FeedDetail;
 
 import org.apache.axis.utils.StringUtils;
@@ -26,7 +27,7 @@ import java.util.List;
  *
  */
 @Controller
-@RequestMapping("/walmartapp/feed")
+@RequestMapping("/feed")
 public class FeedController extends BaseController
 {
     private static final Logger LOGGER = LogManager.getLogger(FeedController.class);
@@ -39,8 +40,8 @@ public class FeedController extends BaseController
     {
         LOGGER.info("Feed search start");
         BaseResponse<List<Feed>> response = new BaseResponse<List<Feed>>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             List<Feed> res = null;
             Integer total = null;
@@ -48,8 +49,8 @@ public class FeedController extends BaseController
             {
                 String feedId = request.getData();
                 Integer offset = request.getOffset();
-                total = feedBizService.count(feedId, userId);
-                res = feedBizService.list(feedId, offset, userId);
+                total = feedBizService.count(feedId, user);
+                res = feedBizService.list(feedId, offset, user);
             }
             catch (Exception e)
             {
@@ -72,8 +73,8 @@ public class FeedController extends BaseController
     {
         LOGGER.info("Feed updateFeed start");
         BaseResponse<Boolean> response = new BaseResponse<Boolean>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             Boolean res = Boolean.FALSE;
             String feedId = null;
@@ -84,7 +85,7 @@ public class FeedController extends BaseController
                 {
                     feedId = data;
                 }
-                res = feedBizService.saveFeed(feedId, userId);
+                res = feedBizService.saveFeed(feedId, user);
             }
             catch (Exception e)
             {
@@ -106,14 +107,14 @@ public class FeedController extends BaseController
     {
         LOGGER.info("Feed getFeedDetail start");
         BaseResponse<FeedDetail> response = new BaseResponse<FeedDetail>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             FeedDetail res = null;
             try
             {
                 String feedId = request.getData();
-                res = feedBizService.getFeedDetail(feedId, userId);
+                res = feedBizService.getFeedDetail(feedId, user);
             }
             catch (Exception e)
             {
@@ -136,13 +137,13 @@ public class FeedController extends BaseController
     {
         LOGGER.info("Feed uploadItem start");
         BaseResponse<String> response = new BaseResponse<String>();
-        Integer userId = getUserByToken(token);
-        if (userId != null)
+        UserInfo user = getUserByToken(token);
+        if (user != null)
         {
             String res = null;
             try
             {
-                res = feedBizService.uploadItem(file, userId);
+                res = feedBizService.uploadItem(file, user);
             }
             catch (Exception e)
             {

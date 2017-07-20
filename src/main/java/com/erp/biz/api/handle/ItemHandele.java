@@ -1,31 +1,15 @@
 package com.erp.biz.api.handle;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.axis.utils.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.erp.biz.api.model.mp.MPItemFeed;
 import com.erp.biz.api.model.response.FeedAcknowledgement;
 import com.erp.biz.api.model.response.ItemResponse;
-import com.erp.biz.api.model.response.ItemResponses;
 import com.erp.biz.api.model.response.ItemRetireResponse;
-import com.erp.biz.util.Helper;
-import com.erp.biz.util.HttpClientHelper;
-import com.erp.biz.util.JAXBUtil;
-import com.erp.common.Common;
-import com.erp.controller.ItemController;
+import com.erp.db.model.UserInfo;
 
-public class ItemHandele extends BaseHandele
+public interface ItemHandele
 {
-    private static final Logger LOGGER = LogManager.getLogger(ItemController.class);
-
-    public ItemHandele(String consumerId, String privateEncodedStr)
-    {
-        super(consumerId, privateEncodedStr);
-    }
 
     /**
      * 获取产品信息
@@ -35,32 +19,7 @@ public class ItemHandele extends BaseHandele
      * @return
      * @throws Exception
      */
-    public List<ItemResponse> getItem(String sku, int offset) throws Exception
-    {
-        sku = StringUtils.isEmpty(sku) ? "" : sku;
-        String finalUrl = baseUrl + "v3/items/" + Helper.urlEscapeProcessing(sku) + "?offset=" + offset;
-        HttpClientHelper httpClient = createHttpClient(finalUrl, Common.GET);
-
-        List<ItemResponse> list = new ArrayList<>();
-        String xml = null;
-        try
-        {
-            LOGGER.info(finalUrl);
-            xml = httpClient.doHttpGet(finalUrl);
-            LOGGER.info(xml);
-            ItemResponses itemViews = JAXBUtil.converyToJavaBean(xml, ItemResponses.class);
-            list.addAll(itemViews.getItemResponse());
-            if (itemViews != null && itemViews.getItemResponse().size() >= 20)
-            {
-                list.addAll(getItem(sku, offset + 20));
-            }
-        }
-        catch (Exception e)
-        {
-            throwError(xml);
-        }
-        return list;
-    }
+    public List<ItemResponse> getItem(String sku, int offset, UserInfo user) throws Exception;
 
     /**
      * 上传产品
@@ -69,28 +28,7 @@ public class ItemHandele extends BaseHandele
      * @return
      * @throws Exception
      */
-    public FeedAcknowledgement uploadSku(MPItemFeed mpItemFeed) throws Exception
-    {
-        String requestUrl = baseUrl + "v3/feeds?feedType=item";
-        HttpClientHelper httpClient = createHttpClient(requestUrl, Common.POST);
-        FeedAcknowledgement acknowledgement = null;
-        String xml = null;
-        try
-        {
-            LOGGER.info(requestUrl);
-            String requestBoby = JAXBUtil.convertToXml(mpItemFeed);
-            LOGGER.info(requestBoby);
-            xml = httpClient.doHttpPostMultipart(requestUrl, requestBoby);
-            LOGGER.info(xml);
-            acknowledgement = JAXBUtil.converyToJavaBean(xml, FeedAcknowledgement.class);
-
-        }
-        catch (Exception e)
-        {
-            throwError(xml);
-        }
-        return acknowledgement;
-    }
+    public FeedAcknowledgement uploadSku(MPItemFeed mpItemFeed, UserInfo user) throws Exception;
 
     /**
      * 删除一个产品
@@ -98,21 +36,5 @@ public class ItemHandele extends BaseHandele
      * @param sku
      * @return
      */
-    public ItemRetireResponse retireItem(String sku)
-    {
-        String finalUrl = baseUrl + "v3/items/" + Helper.urlEscapeProcessing(sku);
-        HttpClientHelper httpClient = createHttpClient(finalUrl, Common.DELETE);
-        ItemRetireResponse detail = null;
-        try
-        {
-            LOGGER.info(finalUrl);
-            String xml = httpClient.doHttpDelete(finalUrl);
-            LOGGER.info(xml);
-            detail = JAXBUtil.converyToJavaBean(xml, ItemRetireResponse.class);
-        }
-        catch (Exception e)
-        {
-        }
-        return detail;
-    }
+    public ItemRetireResponse retireItem(String sku, UserInfo user) throws Exception;
 }

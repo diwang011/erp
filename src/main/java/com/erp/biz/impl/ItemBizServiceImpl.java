@@ -55,42 +55,41 @@ public class ItemBizServiceImpl extends BaseBizService implements IItemBizServic
     private IItemService itemService;
     @Resource
     private IFeedBizService feedBizService;
+    @Resource
+    private ItemHandele itemHandele;
+    @Resource
+    private InventoryHandele inventoryHandele;
 
     @Override
-    public Boolean saveItem(String sku, Integer userId) throws Exception
+    public Boolean saveItem(String sku, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null)
         {
             return false;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
+        List<ItemResponse> res = getItemListByApi(sku, user);
 
-        List<ItemResponse> res = getItemListByApi(sku, consumerId, privateEncodedStr);
+        List<Inventory> invs = getInventoryByTask(user, res);
 
-        List<Inventory> invs = getInventoryByTask(consumerId, privateEncodedStr, res);
+        List<Item> items = bildItem(user.getId(), invs, res);
 
-        List<Item> items = bildItem(userId, invs, res);
-
-        saveData(userId, items, sku);
+        saveData(user, items, sku);
         return true;
     }
 
-    List<ItemResponse> getItemListByApi(String sku, String consumerId, String privateEncodedStr) throws Exception
+    List<ItemResponse> getItemListByApi(String sku, UserInfo user) throws Exception
     {
-        ItemHandele itemHandele = new ItemHandele(consumerId, privateEncodedStr);
         int offset = 0;
         List<ItemResponse> res = null;
         try
         {
-            res = itemHandele.getItem(sku, offset);
+            res = itemHandele.getItem(sku, offset, user);
         }
         catch (Exception e)
         {
             try
             {
-                res = itemHandele.getItem(sku, offset);
+                res = itemHandele.getItem(sku, offset, user);
             }
             catch (Exception e1)
             {
@@ -105,19 +104,19 @@ public class ItemBizServiceImpl extends BaseBizService implements IItemBizServic
         return res;
     }
 
-    private void saveData(Integer userId, List<Item> items, String sku) throws Exception
+    private void saveData(UserInfo user, List<Item> items, String sku) throws Exception
     {
         Boolean flag = Boolean.FALSE;
         if (StringUtil.isEmpty(sku))
         {
-            itemService.deleteByUserIdAndSku(null, userId);
+            itemService.deleteByUserIdAndSku(null, user.getId());
             flag = Boolean.TRUE;
         }
         for (Item it : items)
         {
             if (!flag)
             {
-                itemService.deleteByUserIdAndSku(it.getSku(), userId);
+                itemService.deleteByUserIdAndSku(it.getSku(), user.getId());
             }
             int i = itemService.insert(it);
             if (i != 1)
@@ -158,13 +157,13 @@ public class ItemBizServiceImpl extends BaseBizService implements IItemBizServic
         return items;
     }
 
-    public List<Inventory> getInventoryByTask(String consumerId, String privateEncodedStr, List<ItemResponse> res)
+    public List<Inventory> getInventoryByTask(UserInfo user, List<ItemResponse> res)
     {
         ExecutorService pool = Executors.newFixedThreadPool(res.size());
         List<Future<Inventory>> list = new ArrayList<Future<Inventory>>();
         for (ItemResponse itemResponse : res)
         {
-            Callable<Inventory> c = new MyCallable(consumerId, privateEncodedStr, itemResponse.getSku());
+            Callable<Inventory> c = new MyCallable(user, inventoryHandele, itemResponse.getSku());
             Future<Inventory> f = pool.submit(c);
             list.add(f);
 
@@ -197,108 +196,68 @@ public class ItemBizServiceImpl extends BaseBizService implements IItemBizServic
         return toBean;
     }
 
+    @Resource
+    private PriceHandele priceHandele;
+
     @Override
-    public Boolean updatePrice(Item item, Integer userId) throws Exception
+    public Boolean updatePrice(Item item, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null)
         {
             return false;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
-        PriceHandele priceHandele = new PriceHandele(consumerId, privateEncodedStr);
         ItemPriceResponse res = null;
-        try
-        {
-            res = priceHandele.updatePrice(item.getSku(), CurrencyCode.USD.name(), item.getPrice_amount() + "");
-        }
-        catch (Exception e)
-        {
-            throw e;
-
-        }
+        res = priceHandele.updatePrice(item.getSku(), CurrencyCode.USD.name(), item.getPrice_amount() + "", user);
         if (res == null)
         {
             return false;
         }
-        return saveItem(item.getSku(), userId);
+        return
+
+        saveItem(item.getSku(), user);
     }
 
     @Override
-    public Boolean updateInventory(Item item, Integer userId) throws Exception
+    public Boolean updateInventory(Item item, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null)
         {
             return false;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
-        InventoryHandele inventoryHandele = new InventoryHandele(consumerId, privateEncodedStr);
         Inventory res = null;
-        try
-        {
-            res = inventoryHandele.updateInventoryForItem(item.getSku(), item.getInv_amount() + "",
-                    item.getFulfillmentLagTime());
-        }
-        catch (Exception e)
-        {
-            throw e;
-
-        }
+        res = inventoryHandele.updateInventoryForItem(item.getSku(), item.getInv_amount() + "",
+                item.getFulfillmentLagTime(), user);
         if (res == null)
         {
             return false;
         }
-        return saveItem(item.getSku(), userId);
+        return saveItem(item.getSku(), user);
     }
 
+    @Resource
+    private PromotionHandele promotionHandele;
+
     @Override
-    public Promotional getPromotion(String sku, Integer userId) throws Exception
+    public Promotional getPromotion(String sku, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null)
         {
             return null;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
-        PromotionHandele promotionHandele = new PromotionHandele(consumerId, privateEncodedStr);
         Promotional res = null;
-        try
-        {
-            res = promotionHandele.getPromotionalPrices(sku);
-        }
-        catch (Exception e)
-        {
-            throw e;
-
-        }
+        res = promotionHandele.getPromotionalPrices(sku, user);
         return res;
     }
 
     @Override
-    public Boolean addPromotion(Promotional promotional, Integer userId) throws Exception
+    public Boolean addPromotion(Promotional promotional, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null)
         {
             return false;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
-        PromotionHandele promotionHandele = new PromotionHandele(consumerId, privateEncodedStr);
         ItemPriceResponse res = null;
-        try
-        {
-            res = promotionHandele.updatePromotionalPrice(promotional, ProcessModeType.UPSERT);
-        }
-        catch (Exception e)
-        {
-            throw e;
-
-        }
+        res = promotionHandele.updatePromotionalPrice(promotional, ProcessModeType.UPSERT, user);
         if (res == null)
         {
             return false;
@@ -307,31 +266,19 @@ public class ItemBizServiceImpl extends BaseBizService implements IItemBizServic
     }
 
     @Override
-    public Boolean bulkAddPromotion(MultipartFile multipartFile, Integer userId) throws Exception
+    public Boolean bulkAddPromotion(MultipartFile multipartFile, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null)
         {
             return false;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
-        PromotionHandele promotionHandele = new PromotionHandele(consumerId, privateEncodedStr);
         FeedAcknowledgement res = null;
-        try
-        {
-            List<Promotional> promotionals = readXlsContent(multipartFile, Promotional.class);
-            // for (Promotional promotional : promotionals)
-            // {
-            // addPromotion(promotional, userId);
-            // }
-            res = promotionHandele.bulkUpdatePromotionalPrice(promotionals);
-        }
-        catch (Exception e)
-        {
-            throw e;
-
-        }
+        List<Promotional> promotionals = readXlsContent(multipartFile, Promotional.class);
+        // for (Promotional promotional : promotionals)
+        // {
+        // addPromotion(promotional, user);
+        // }
+        res = promotionHandele.bulkUpdatePromotionalPrice(promotionals, user);
         if (res == null)
         {
             return false;
@@ -340,27 +287,15 @@ public class ItemBizServiceImpl extends BaseBizService implements IItemBizServic
     }
 
     @Override
-    public Boolean deletePromotion(String sku, Integer userId) throws Exception
+    public Boolean deletePromotion(String sku, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null)
         {
             return false;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
-        PromotionHandele promotionHandele = new PromotionHandele(consumerId, privateEncodedStr);
         ItemPriceResponse res = null;
-        try
-        {
-            Promotional promotional = getPromotion(sku, userId);
-            res = promotionHandele.updatePromotionalPrice(promotional, ProcessModeType.DELETE);
-        }
-        catch (Exception e)
-        {
-            throw e;
-
-        }
+        Promotional promotional = getPromotion(sku, user);
+        res = promotionHandele.updatePromotionalPrice(promotional, ProcessModeType.DELETE, user);
         if (res == null)
         {
             return false;
@@ -369,91 +304,67 @@ public class ItemBizServiceImpl extends BaseBizService implements IItemBizServic
     }
 
     @Override
-    public String updateBulkInventory(MultipartFile multipartFile, Integer userId) throws Exception
+    public String updateBulkInventory(MultipartFile multipartFile, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null)
         {
             return null;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
         FeedAcknowledgement res = null;
-        InventoryHandele inventoryHandele = new InventoryHandele(consumerId, privateEncodedStr);
-        try
+        List<InventoryInfo> dataList = readXlsContent(multipartFile, InventoryInfo.class);
+        List<Data> list = new ArrayList<Data>();
+        for (InventoryInfo inv : dataList)
         {
-            List<InventoryInfo> dataList = readXlsContent(multipartFile, InventoryInfo.class);
-            List<Data> list = new ArrayList<Data>();
-            for (InventoryInfo inv : dataList)
-            {
-                Data data = new Data(inv.getSku(), inv.getAmount(), inv.getFulfillmentLagTime());
-                list.add(data);
-            }
-            res = inventoryHandele.bulkUpdateInventory(list);
+            Data data = new Data(inv.getSku(), inv.getAmount(), inv.getFulfillmentLagTime());
+            list.add(data);
         }
-        catch (Exception e)
-        {
-            throw e;
-
-        }
+        res = inventoryHandele.bulkUpdateInventory(list, user);
         String feedId = null;
         if (res != null)
         {
             feedId = res.getFeedId();
-            feedBizService.saveFeed(feedId, userId);
+            feedBizService.saveFeed(feedId, user);
         }
         return feedId;
     }
 
     @Override
-    public String updateBulkPrice(MultipartFile multipartFile, Integer userId) throws Exception
+    public String updateBulkPrice(MultipartFile multipartFile, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null)
         {
             return null;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
         FeedAcknowledgement res = null;
-        PriceHandele priceHandele = new PriceHandele(consumerId, privateEncodedStr);
-        try
+        List<PriceInfo> dataList = readXlsContent(multipartFile, PriceInfo.class);
+        List<Data> list = new ArrayList<Data>();
+        for (PriceInfo p : dataList)
         {
-            List<PriceInfo> dataList = readXlsContent(multipartFile, PriceInfo.class);
-            List<Data> list = new ArrayList<Data>();
-            for (PriceInfo p : dataList)
-            {
-                Data data = new Data(p.getSku(), p.getAmount(), p.getCurrency());
-                list.add(data);
-            }
-            res = priceHandele.updateBulkPrices(list);
+            Data data = new Data(p.getSku(), p.getAmount(), p.getCurrency());
+            list.add(data);
         }
-        catch (Exception e)
-        {
-            throw e;
-
-        }
+        res = priceHandele.updateBulkPrices(list, user);
         String feedId = null;
         if (res != null)
         {
             feedId = res.getFeedId();
-            feedBizService.saveFeed(feedId, userId);
+            feedBizService.saveFeed(feedId, user);
         }
         return feedId;
     }
 
     @Override
-    public List<Item> list(String sku, Integer offset, Integer userId)
+    public List<Item> list(String sku, Integer offset, UserInfo user)
     {
-        List<Item> list = itemService.list(sku, offset, userId);
+        List<Item> list = itemService.list(sku, offset, user.getId());
         return list;
     }
 
     @Override
-    public String exportPrice(String sku, Integer userId)
+    public String exportPrice(String sku, UserInfo user)
     {
         List<PriceInfo> list = new ArrayList<PriceInfo>();
-        List<Item> items = list(sku, null, userId);
+        List<Item> items = list(sku, null, user);
         for (Item item : items)
         {
             PriceInfo p = new PriceInfo();
@@ -475,10 +386,10 @@ public class ItemBizServiceImpl extends BaseBizService implements IItemBizServic
     }
 
     @Override
-    public String exportInventory(String sku, Integer userId)
+    public String exportInventory(String sku, UserInfo user)
     {
         List<InventoryInfo> list = new ArrayList<InventoryInfo>();
-        List<Item> items = list(sku, null, userId);
+        List<Item> items = list(sku, null, user);
         for (Item item : items)
         {
             InventoryInfo inv = new InventoryInfo();
@@ -501,38 +412,27 @@ public class ItemBizServiceImpl extends BaseBizService implements IItemBizServic
     }
 
     @Override
-    public Integer count(String sku, Integer userId)
+    public Integer count(String sku, UserInfo user)
     {
-        return itemService.count(sku, userId);
+        return itemService.count(sku, user.getId());
     }
 
     @Override
-    public Boolean retireItem(String sku, Integer userId) throws Exception
+    public Boolean retireItem(String sku, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null)
         {
             return false;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
-        ItemHandele itemHandele = new ItemHandele(consumerId, privateEncodedStr);
         ItemRetireResponse res = null;
-        try
-        {
-            res = itemHandele.retireItem(sku);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
+        res = itemHandele.retireItem(sku, user);
         if (res == null)
         {
             return false;
         }
         else
         {
-            saveItem(sku, userId);
+            saveItem(sku, user);
         }
         return true;
     }

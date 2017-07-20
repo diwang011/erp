@@ -17,6 +17,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.eclipse.persistence.oxm.annotations.XmlCDATA;
+
 
 /**
  * <p>Office complex type的 Java 类。
@@ -869,6 +871,7 @@ import javax.xml.bind.annotation.XmlType;
 public class Office {
 
     @XmlElement(required = true)
+    @XmlCDATA
     protected String shortDescription;
     protected KeyFeatures keyFeatures;
     @XmlElement(required = true)

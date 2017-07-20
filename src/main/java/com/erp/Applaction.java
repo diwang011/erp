@@ -8,12 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.erp.conf.ConnectionSettings;
+
 
 /**
  * 1).@SpringBootApplication标注启动配置入口，run()方法会创建一个Spring应用上下文(Application Context)。
@@ -40,7 +44,13 @@ public class Applaction
     {
         return "Spring Boot Application...";
     }
+    @Bean
+    @ConfigurationProperties(prefix = "connection")
+    public ConnectionSettings connectionSettings()
+    {
+        return new ConnectionSettings();
 
+    }
     @Bean
     @Autowired
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception

@@ -50,14 +50,26 @@ public class OrderItemServiceImpl implements IOrderItemService
     }
 
     @Override
-    public List<OrderItem> listByOrderId(Integer OrderId)
+    public List<OrderItem> listByOrderId(Integer orderId)
     {
         OrderItemExample example = new OrderItemExample();
         Criteria criteria = example.createCriteria();
+        if (orderId != null)
         {
-            criteria.andOrderIdEqualTo(OrderId);
+            criteria.andOrderIdEqualTo(orderId);
         }
         return orderItemMapper.selectByExample(example);
     }
 
+    @Override
+    public int deleteByOrderId(Integer orderId)
+    {
+        OrderItemExample example = new OrderItemExample();
+        Criteria criteria = example.createCriteria();
+        if (orderId != null)
+        {
+            criteria.andOrderIdEqualTo(orderId);
+        }
+        return orderItemMapper.deleteByExample(example);
+    }
 }

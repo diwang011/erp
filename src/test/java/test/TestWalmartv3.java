@@ -1,103 +1,87 @@
 package test;
-//package com.erp.biz.api.handle;
-//
-//import java.io.BufferedReader;
-//import java.io.File;
-//import java.io.FileInputStream;
-//import java.io.FileReader;
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.math.BigDecimal;
-//import java.security.KeyFactory;
-//import java.security.PrivateKey;
-//import java.security.Signature;
-//import java.security.spec.PKCS8EncodedKeySpec;
-//import java.util.ArrayList;
-//import java.util.Date;
-//import java.util.GregorianCalendar;
-//import java.util.HashMap;
-//import java.util.Iterator;
-//import java.util.List;
-//import java.util.Map;
-//import java.util.UUID;
-//
-//import javax.xml.bind.JAXBException;
-//import javax.xml.datatype.DatatypeFactory;
-//import javax.xml.datatype.XMLGregorianCalendar;
-//
-//import org.apache.commons.codec.binary.Base64;
-//import org.apache.commons.httpclient.NameValuePair;
-//import org.apache.poi.ss.usermodel.Row;
-//import org.apache.poi.ss.usermodel.Sheet;
-//import org.apache.poi.ss.usermodel.Workbook;
-//import org.apache.poi.ss.usermodel.WorkbookFactory;
-//
-//import com.erp.biz.api.model.Data;
-//import com.erp.biz.api.model.inventory.Inventory;
-//import com.erp.biz.api.model.inventory.InventoryFeed;
-//import com.erp.biz.api.model.inventory.InventoryHeader;
-//import com.erp.biz.api.model.inventory.Quantity;
-//import com.erp.biz.api.model.inventory.UnitOfMeasurement;
-//import com.erp.biz.api.model.mp.AdditionalProductAttribute;
-//import com.erp.biz.api.model.mp.AdditionalProductAttributes;
-//import com.erp.biz.api.model.mp.Electronics;
-//import com.erp.biz.api.model.mp.LengthUnit;
-//import com.erp.biz.api.model.mp.MPItem;
-//import com.erp.biz.api.model.mp.MPItemFeed;
-//import com.erp.biz.api.model.mp.MPItemFeedHeader;
-//import com.erp.biz.api.model.mp.MPProduct;
-//import com.erp.biz.api.model.mp.ProductIdentifier;
-//import com.erp.biz.api.model.mp.ProductIdentifiers;
-//import com.erp.biz.api.model.mp.WeightUnit;
-//import com.erp.biz.api.model.order.CarrierNameType;
-//import com.erp.biz.api.model.order.CarrierType;
-//import com.erp.biz.api.model.order.ChargeType;
-//import com.erp.biz.api.model.order.MetaType;
-//import com.erp.biz.api.model.order.Order;
-//import com.erp.biz.api.model.order.OrderLineStatusType;
-//import com.erp.biz.api.model.order.OrderLineStatusValueType;
-//import com.erp.biz.api.model.order.OrderLineType;
-//import com.erp.biz.api.model.order.OrderLinesType;
-//import com.erp.biz.api.model.order.OrderShipment;
-//import com.erp.biz.api.model.order.OrdersListType;
-//import com.erp.biz.api.model.order.ShipLineStatusType;
-//import com.erp.biz.api.model.order.ShipLineStatusesType;
-//import com.erp.biz.api.model.order.ShippingLineType;
-//import com.erp.biz.api.model.order.ShippingLinesType;
-//import com.erp.biz.api.model.order.ShippingMethodCodeType;
-//import com.erp.biz.api.model.order.TrackingInfoType;
-//import com.erp.biz.api.model.price.FeedHeaderType;
-//import com.erp.biz.api.model.price.ItemIdentifierType;
-//import com.erp.biz.api.model.price.ItemPriceType;
-//import com.erp.biz.api.model.price.MoneyType;
-//import com.erp.biz.api.model.price.Price;
-//import com.erp.biz.api.model.price.PriceFeed;
-//import com.erp.biz.api.model.price.PricingListType;
-//import com.erp.biz.api.model.price.PricingType;
-//import com.erp.biz.api.model.response.CurrencyCode;
-//import com.erp.biz.api.model.response.FeedAcknowledgement;
-//import com.erp.biz.api.model.response.FeedRecord;
-//import com.erp.biz.api.model.response.FeedRecordResponse;
-//import com.erp.biz.api.model.response.FeedStatus;
-//import com.erp.biz.api.model.response.IngestionError;
-//import com.erp.biz.api.model.response.ItemResponse;
-//import com.erp.biz.api.model.response.ItemResponses;
-//import com.erp.biz.api.model.response.ItemRetireResponse;
-//import com.erp.biz.api.model.response.ItemStatus;
-//import com.erp.biz.api.model.response.ItemStatusDetail;
-//import com.erp.biz.api.model.response.Money;
-//import com.erp.biz.api.model.response.PartnerFeedResponse;
-//import com.erp.biz.api.model.response.PartnerItemIngestionStatus;
-//import com.erp.biz.api.model.response.ServiceResponse;
-//import com.erp.biz.api.model.response.UnitOfWeight;
-//import com.erp.biz.api.model.response.WeightMeasure;
-//import com.erp.biz.api.util.ExcelReportFileReaderWriterUtil;
-//import com.erp.biz.api.util.HttpClientHelper;
-//import com.erp.biz.api.util.JAXBUtil;
-//import com.erp.biz.api.util.Reportable;
-//
-//public class TestWalmartv3
-//{
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.Signature;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+
+import com.erp.biz.api.model.inventory.Inventory;
+import com.erp.biz.api.model.inventory.InventoryFeed;
+import com.erp.biz.api.model.inventory.InventoryHeader;
+import com.erp.biz.api.model.inventory.Quantity;
+import com.erp.biz.api.model.inventory.UnitOfMeasurement;
+import com.erp.biz.api.model.mp.MPItem;
+import com.erp.biz.api.model.mp.MPItemFeed;
+import com.erp.biz.api.model.mp.MPItemFeedHeader;
+import com.erp.biz.api.model.order.CarrierNameType;
+import com.erp.biz.api.model.order.CarrierType;
+import com.erp.biz.api.model.order.ChargeType;
+import com.erp.biz.api.model.order.MetaType;
+import com.erp.biz.api.model.order.Order;
+import com.erp.biz.api.model.order.OrderLineStatusType;
+import com.erp.biz.api.model.order.OrderLineStatusValueType;
+import com.erp.biz.api.model.order.OrderLineType;
+import com.erp.biz.api.model.order.OrderLinesType;
+import com.erp.biz.api.model.order.OrderShipment;
+import com.erp.biz.api.model.order.OrdersListType;
+import com.erp.biz.api.model.order.ShipLineStatusType;
+import com.erp.biz.api.model.order.ShipLineStatusesType;
+import com.erp.biz.api.model.order.ShippingLineType;
+import com.erp.biz.api.model.order.ShippingLinesType;
+import com.erp.biz.api.model.order.ShippingMethodCodeType;
+import com.erp.biz.api.model.order.TrackingInfoType;
+import com.erp.biz.api.model.price.FeedHeaderType;
+import com.erp.biz.api.model.price.ItemIdentifierType;
+import com.erp.biz.api.model.price.ItemPriceType;
+import com.erp.biz.api.model.price.MoneyType;
+import com.erp.biz.api.model.price.Price;
+import com.erp.biz.api.model.price.PriceFeed;
+import com.erp.biz.api.model.price.PricingListType;
+import com.erp.biz.api.model.price.PricingType;
+import com.erp.biz.api.model.response.FeedAcknowledgement;
+import com.erp.biz.api.model.response.FeedRecord;
+import com.erp.biz.api.model.response.FeedRecordResponse;
+import com.erp.biz.api.model.response.FeedStatus;
+import com.erp.biz.api.model.response.IngestionError;
+import com.erp.biz.api.model.response.ItemResponse;
+import com.erp.biz.api.model.response.ItemResponses;
+import com.erp.biz.api.model.response.ItemRetireResponse;
+import com.erp.biz.api.model.response.ItemStatus;
+import com.erp.biz.api.model.response.ItemStatusDetail;
+import com.erp.biz.api.model.response.PartnerFeedResponse;
+import com.erp.biz.api.model.response.PartnerItemIngestionStatus;
+import com.erp.biz.api.model.response.ServiceResponse;
+import com.erp.biz.model.Data;
+import com.erp.biz.util.ExcelReportFileReaderWriterUtil;
+import com.erp.biz.util.JAXBUtil;
+import com.erp.biz.util.Reportable;
+
+public class TestWalmartv3
+{
 //    private static String baseUrl;
 //    private static String consumerId;
 //    private static String privateEncodedStr;
@@ -108,20 +92,21 @@ package test;
 //        baseUrl = "https://marketplace.walmartapis.com/v2/orders/";
 //        consumerChannelType = "bddef1e9-a87d-465b-87bf-a08b756c325d";
 //        // 爱芬照明
-////         consumerId = "6e88c7a7-cc47-42c0-8f23-c34bbdc14bbc";
-////         privateEncodedStr =s
-////         "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIzeI3Rsh6VqzlyU7m+M3Nqs/SEsLiFTLgUBzgeK9VACGMbpt014HAauV7kG2bkcL1TW2DFOryGeEtWtVkEsV09dNSNsWTK1JtX3x0Mpqbbkax/nq9ytwM36XAf6kecX8jie5a/QP67u0hzA1okwAGt7LMC6RiBkzGo0KedVSLfLAgMBAAECgYAtTTLxugVVeSesNmkHjrFn0cIF7QNYzDs8ePwdCN8jP8lgDsFYNIwuydqEMmPKV/oQupcEJF3F3eQIu5nFk9DvxbhG3k/ou7g9oxx5rTcKr+bLJjpaXP3Hs3qa8OooY6wdV2/1/JT5slydXOZBGahGRq7Dw5ex3/ClMhjDq60xAQJBANkjL9blmRM0tGaZcqcvCaq7+QnfTeBcPvcRJ7Nfj7vpzZTTUI5UPcpVKpZ/4aWyQyCLxPUKXELzm2fosCfzEyECQQCmFGwYKbZZ+l/QULCRb1t3wlrXUaC9EO8A7q3NkoacjI9WrRn3mHpVVmupJxzs3qdGBAVQMjm3Bixj0clFIZlrAkEAym1ERxoKx93lpJS/T17Jq1LMS8jTCCvXQ2vJ0C5xiCTiVDFgMyAT7tHQ/zc+/MMgU3IZ7rt24a/LnGZP+x5gIQJALtfxyTrysRxarBImS08ieHv8TWE7ujgtgZDQuvwKNdu7jlIS0fBTCQDwKuzaTsFaYvg9W2pfNw1ptdn1MCeS8wJBAM0ULPfqGYHLYGksItL7mwvx/NPeFrev8tnfkOjeJoAiLrnh8RmCOo7iheWW9GC4NCSGXEwtRcxe2ZEj3FxI1Jk=";
+//        // consumerId = "6e88c7a7-cc47-42c0-8f23-c34bbdc14bbc";
+//        // privateEncodedStr =s
+//        // "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIzeI3Rsh6VqzlyU7m+M3Nqs/SEsLiFTLgUBzgeK9VACGMbpt014HAauV7kG2bkcL1TW2DFOryGeEtWtVkEsV09dNSNsWTK1JtX3x0Mpqbbkax/nq9ytwM36XAf6kecX8jie5a/QP67u0hzA1okwAGt7LMC6RiBkzGo0KedVSLfLAgMBAAECgYAtTTLxugVVeSesNmkHjrFn0cIF7QNYzDs8ePwdCN8jP8lgDsFYNIwuydqEMmPKV/oQupcEJF3F3eQIu5nFk9DvxbhG3k/ou7g9oxx5rTcKr+bLJjpaXP3Hs3qa8OooY6wdV2/1/JT5slydXOZBGahGRq7Dw5ex3/ClMhjDq60xAQJBANkjL9blmRM0tGaZcqcvCaq7+QnfTeBcPvcRJ7Nfj7vpzZTTUI5UPcpVKpZ/4aWyQyCLxPUKXELzm2fosCfzEyECQQCmFGwYKbZZ+l/QULCRb1t3wlrXUaC9EO8A7q3NkoacjI9WrRn3mHpVVmupJxzs3qdGBAVQMjm3Bixj0clFIZlrAkEAym1ERxoKx93lpJS/T17Jq1LMS8jTCCvXQ2vJ0C5xiCTiVDFgMyAT7tHQ/zc+/MMgU3IZ7rt24a/LnGZP+x5gIQJALtfxyTrysRxarBImS08ieHv8TWE7ujgtgZDQuvwKNdu7jlIS0fBTCQDwKuzaTsFaYvg9W2pfNw1ptdn1MCeS8wJBAM0ULPfqGYHLYGksItL7mwvx/NPeFrev8tnfkOjeJoAiLrnh8RmCOo7iheWW9GC4NCSGXEwtRcxe2ZEj3FxI1Jk=";
 //        // 麦风
 //        // consumerId = "6f73e16c-49af-463f-a494-e864476e0964";
 //        // privateEncodedStr =
 //        // "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAJuel89ZZwz4vjF5OkhIyAYdYyhsd8D1ydqyNKknuH2nY3mePXosSvHDjDZen8uhdTkTgk3Sg2tzA/IpXzw3Go5g5l5a//lfFCX6Uj78JpsqRXPswTnqjIZqJnkKwYQjmekZhw7EwPNCO3ONLu1IIX72wG7Qm8v4RPiaiFNdf6fHAgMBAAECgYEAiMXap2LsL3pvrwvdLarKIpWxkNXEatOblZsKraE7hTSZOUravYYwWEyF70M7Lr25SXDcFYnv94Ae97dk/IdxzlAl5u1eJ7qWlVNEwKVH5Sl8FmUAqX9gJUwOR/pcyS3uVvW9rTzIA3o5YzV4Qw0hvNIHoVNWWm65QiXfQytxCAECQQDgIAkvXrfC19vl5JvQyJR0bRRvzkwrYbY8+uDZFWjdjdIxyME2OdYogHMACz8pTcaPYHia0ZssRNhKhMoWLJ61AkEAscBmJsWSSFT3HtY5dCWo6JzstbxAPEep3UvuoHE19rmUL1TnLm7vS4WuI30HaXjwNZPJbrc2v2W9eNNIYLE+CwJBANut6vLYZ0v+4pYyfpuljwWTSV3Rmo1HCCY7TZraRmArO2T6vo8VH5mxVYcsfutQRZiRWYV+gBdjH5HjGGWltKUCQQCkMtMqZcAnyTUu6z3PqSpLFwsjJm9AQAMORiJ9W5c5/1yADLIyFpA+95JRfiHmsK1VENw2xlBwpg9NGf/2MkTZAkAwA67vGsNiQ61zdfLN0kDbvCnQUIocoxgZzmOedTiYoKT92u53ccdLfIM8OudPcU0XeycjgZYTKq54KAYNR3HL";
 //        // 星阡陌
-////         consumerId = "8e63d238-a35f-49ca-bee9-439b857f7cb5";
-////         privateEncodedStr =
-////         "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAK2ndOGlBI8PwRxFcg84plRAP2OlGmG+Kq6397xYDXKOirrVJiakAN0vZFha9wTlNi7ptZnpI8ODORqARQd69JcrNwSayxnVjexCjsuwmrG7VAdH5NPYvCDmjpW8R0BvZCPFl5XN9RlzswbF1Mdv8Ok0Zfc6xmxAzKtyuvQDeyLpAgMBAAECgYAv+cWm2WpLA/U8FEuQvPvm5uEcbG6/dkRghN7ioAkHDy5ws5aYslKyyPcWGfuI1LKFf3f2j5yb1VMfaTSo/mU4MOJtClVtENvEANQcJ7c+NZS7kuDxBqk1vWcX7be6079jFmrjcM0byOLgwP0rwyKn3kz8ZdGvecccClHlK0WtaQJBAPEFC4IrVIJyW2Ar1LD11LT/OjQgumxa7D2YZ3x1ofvc7o49sd2oCCIgx/GT2zYsfBtJMBY7wJtb1hcOENCU3hMCQQC4cohXZP1Plubs9f8A9ArofBdP7yPAG3d42V/6ivHZqjt/JiwNP/d5AnURa3hsWb9mztzDk1VgvtOVrJyoPaqTAkAna5rRRIMC/u9BEIouE1ch72i2o++5zzk6bdXnPlorFpyR+TdBOL1zz4bEVVmSR75YvCS4TjeXcXLXvH41j1OvAkBNnk0H0gTTSGJ3V3HvOcOZYBcDWVRHFIfrQDamnW/3NC8Da9Hf5YpDzyfqo7oyhnYIUocOemLUaplphBEMr56nAkEAtez/CEr4NfVE1VzUyyviYnfLKl8WGPI7fJAmSFxzSsz2QzD9NT/mk/EqgWos2GkL6HC9033YxFe113CkJGbOuA==";
+//        // consumerId = "8e63d238-a35f-49ca-bee9-439b857f7cb5";
+//        // privateEncodedStr =
+//        // "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAK2ndOGlBI8PwRxFcg84plRAP2OlGmG+Kq6397xYDXKOirrVJiakAN0vZFha9wTlNi7ptZnpI8ODORqARQd69JcrNwSayxnVjexCjsuwmrG7VAdH5NPYvCDmjpW8R0BvZCPFl5XN9RlzswbF1Mdv8Ok0Zfc6xmxAzKtyuvQDeyLpAgMBAAECgYAv+cWm2WpLA/U8FEuQvPvm5uEcbG6/dkRghN7ioAkHDy5ws5aYslKyyPcWGfuI1LKFf3f2j5yb1VMfaTSo/mU4MOJtClVtENvEANQcJ7c+NZS7kuDxBqk1vWcX7be6079jFmrjcM0byOLgwP0rwyKn3kz8ZdGvecccClHlK0WtaQJBAPEFC4IrVIJyW2Ar1LD11LT/OjQgumxa7D2YZ3x1ofvc7o49sd2oCCIgx/GT2zYsfBtJMBY7wJtb1hcOENCU3hMCQQC4cohXZP1Plubs9f8A9ArofBdP7yPAG3d42V/6ivHZqjt/JiwNP/d5AnURa3hsWb9mztzDk1VgvtOVrJyoPaqTAkAna5rRRIMC/u9BEIouE1ch72i2o++5zzk6bdXnPlorFpyR+TdBOL1zz4bEVVmSR75YvCS4TjeXcXLXvH41j1OvAkBNnk0H0gTTSGJ3V3HvOcOZYBcDWVRHFIfrQDamnW/3NC8Da9Hf5YpDzyfqo7oyhnYIUocOemLUaplphBEMr56nAkEAtez/CEr4NfVE1VzUyyviYnfLKl8WGPI7fJAmSFxzSsz2QzD9NT/mk/EqgWos2GkL6HC9033YxFe113CkJGbOuA==";
 //        // 万兆通
-////        consumerId = "d7ee7952-e040-4fa2-b18f-d3c7a79a2b7c";
-////        privateEncodedStr = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIWmyRlVTMTFAFLBJI2dPk8bXGI1kAkxGL7hNUteaXn6pPuRd5beDUW4XMpBm7DyFQDg/9Y1RusKmKkS1nmujKtKj+DUaNbeutyhg1HascB/jBL1pB2CvSR5zrgTKk3DK2vmsRJCzuJoNRcvQlwggDKzdwUbSweJdWYvrngnkh+RAgMBAAECgYBU8Knv+sE+cQGClpOXmO7Hsdjl5aqz3MsgTNrlGoyoZD5ET7AUZu1CeSgntsivDTuCAn0180guCt743SsHzIJDTEVv484E/92DsUT9RlNNStuX4fx+thBt3QV3i4L4ScB5UoHp6mTPtTmNQQ/gY/N1S2Lt8eufDxA0XBNVLSf4AQJBAO0uHHMxFupPB49VGnaTIY+EzztHRV7F90oGMRZlW9wl6sWVClkfEv+9Jjuhf5oHJhVyeutJfnfkBpDfqu4yaoECQQCQQa0dTsgAQX/N+IGt+4DQRWYy9pib2TUhjXUwE1ek3sarNzURYZ2+4+RfX1Uz+MruvfQaB4peEDAQioIpkI0RAkEAp2fBeuiuJOltC5Tk3caRjIwP/OYcJ32RQnVGVmlqQeOdZqIAsNDHByzJfJNLzjq3fbHU4pd4JUUUAVNtgTyigQJAVi1V7K82naiDYBl35ubbYhBDaGiWbGwK6HtoKYs0jYKkbn4xjquhH/tmX29FKCIVoSALJk2g5GaJQChub8Qx8QJBAJxrbXEXhZm4kWAbQ+rr7I3KalFdS0ubUWTGBsQwZM9CN7jkNheJ24tfVCsU8D6asP2rzbg/n0HgCG9e43GTOXY=";
+//        // consumerId = "d7ee7952-e040-4fa2-b18f-d3c7a79a2b7c";
+//        // privateEncodedStr =
+//        // "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIWmyRlVTMTFAFLBJI2dPk8bXGI1kAkxGL7hNUteaXn6pPuRd5beDUW4XMpBm7DyFQDg/9Y1RusKmKkS1nmujKtKj+DUaNbeutyhg1HascB/jBL1pB2CvSR5zrgTKk3DK2vmsRJCzuJoNRcvQlwggDKzdwUbSweJdWYvrngnkh+RAgMBAAECgYBU8Knv+sE+cQGClpOXmO7Hsdjl5aqz3MsgTNrlGoyoZD5ET7AUZu1CeSgntsivDTuCAn0180guCt743SsHzIJDTEVv484E/92DsUT9RlNNStuX4fx+thBt3QV3i4L4ScB5UoHp6mTPtTmNQQ/gY/N1S2Lt8eufDxA0XBNVLSf4AQJBAO0uHHMxFupPB49VGnaTIY+EzztHRV7F90oGMRZlW9wl6sWVClkfEv+9Jjuhf5oHJhVyeutJfnfkBpDfqu4yaoECQQCQQa0dTsgAQX/N+IGt+4DQRWYy9pib2TUhjXUwE1ek3sarNzURYZ2+4+RfX1Uz+MruvfQaB4peEDAQioIpkI0RAkEAp2fBeuiuJOltC5Tk3caRjIwP/OYcJ32RQnVGVmlqQeOdZqIAsNDHByzJfJNLzjq3fbHU4pd4JUUUAVNtgTyigQJAVi1V7K82naiDYBl35ubbYhBDaGiWbGwK6HtoKYs0jYKkbn4xjquhH/tmX29FKCIVoSALJk2g5GaJQChub8Qx8QJBAJxrbXEXhZm4kWAbQ+rr7I3KalFdS0ubUWTGBsQwZM9CN7jkNheJ24tfVCsU8D6asP2rzbg/n0HgCG9e43GTOXY=";
 //        // 邦德贸易BANGDETRADING
 //        // consumerId = "9d6f5383-8929-4341-a5c4-98a767996365";
 //        // privateEncodedStr =
@@ -135,19 +120,23 @@ package test;
 //        // privateEncodedStr =
 //        // "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKbcxEyl9Rih7YrQjAuaEtRHOifJghtGC5XW9xgt4LEnYDDmXOKl2Rzt0/bdYeoxfnr5EZ2CTs7VNHL4vpajWPRke7kOtgtWeL7pSGVhwSQETOdGXHdYeDPsbifVTnubPO6ROV3XmZw9n/4hX2zzOPVfOGofljKmkyFknnoTBHHJAgMBAAECgYBcEufSr6S+EeQkvAz6/eqz7hW+DKhZal5MMVEpq28X8fVXJlZMzl0uZGGZD/HOq77yFmvM8TGRWf5WDsIEF2CmmkCAcElt/HXHC+azeYhxrX9d+RQZJVOIfx+rYZMp6j9OjWZjfZVb2sTo+1KNyQ7MOv9SrkCb9/65U3d0leaSgQJBAPrzzo2FVSVq+t1lIoRL7u9bMPWpKVKFaVqUVZpY7KJYnB/0jQ9DyfsuOuwy2/w+Qc8brYlgOGSGHLFjSxXshzkCQQCqN/ejRuGhJv/CtMqllyoCtU2ggIvc5jLq4D0EJGd7eksW4kEtTg9AdsMZkaz6toG98fs/G6nDzErRHQphXC8RAkEA+Gftxdh9eBR1TkGV8S7YzMWPqRxRcwXsS2UZdzcexXTA1kDUgI+xl5kjajrN1topekEDfkBokdjO/igzYvhGwQJAb75EDGUI0/E1L43eBqzgwFxjNH2O05ovTO+ePqzjXjUfPEuVu/clng0Y8R0n8IKFU7uaU4iGfuoLJ5In8VhB8QJBAJBiOZaxjYRxjbfmoJ7anxvUSrDnMAyZGOEju88Thkz9dm/fvG0lNLJcCE+eqWlkqnum6Xru/vHlf08u+/9oB1c=";
 //        // （Fremo inc）冲锋兔科技
-//         consumerId = "438f955c-849e-4e1c-ac2a-558935e2f68d";
-//         privateEncodedStr =
-//         "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIYSIRD2EFI3yHucEqUm6Qjg3uJiC3zIzws81t2MlLekP4zTfH9CM4O7QYGdvLbsCpiWaP2yiBFuCaoL6sKBDj371MBBvU9HqSxAcoMEqxOMBKr+UCX6Pqwc4hMB0fQXFme16EdanVAv2ocuGX7VwmZl3WPCVj41AtLN5Xg7OcmbAgMBAAECgYAMxHMzq0sYmUlVRCKeaZsthkSTaGTRqEnXNx77ECUla9XFcmpbsBE5zT5Kupu7C7VinIg5CKRejI0NDX94sFOLvOClyPu1mXnFS9IJCt/6TQ1HVtWraNv8X58OZBRmvQ91bNp9iUcEHnHn8cpAT5DdlqVWnrKrqCjX30VlsOj/eQJBAPT9iOz1VrwGEfydp5pq0bw2upch//JgR2JyoW9MJk/EKqUBVRVif+JVQ/ajesN8WJmDnh1ZL3wkf6zHKob2JwUCQQCMGIhG5XsPf4xlk5nzyX/p0+ls1y2Y+lviXsoV/09MQYYbsZCIEXNArjmB8Y+qsXn8ThIaQAbvfD8wfU4ki9AfAkEAjsbbb82jmLyo6uIudW3fgaMbp0ynT2gQ8i0ALE7i3QXkHHnkTiwzf4JVs32e5CKpt/3evhfl9qGGzvjbrf/yyQJALoc/S3yPwHf2Iw5AhU0Y5Iny7qkQhcwwlCAzMdcXeRYR+kSg4fAZvROgGd4mfuRuxTMQpBM7unIjcnFLcKvWtQJBANp47J8TYDcEkSVhh8b5e8QbMprW3uizjRyHNl8mpxGc+gBs92nEBhzsPK8q/JF+EdzhXRUSezPNJ5qLQnvlCbY=";
+//        // consumerId = "438f955c-849e-4e1c-ac2a-558935e2f68d";
+//        // privateEncodedStr =
+//        // "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIYSIRD2EFI3yHucEqUm6Qjg3uJiC3zIzws81t2MlLekP4zTfH9CM4O7QYGdvLbsCpiWaP2yiBFuCaoL6sKBDj371MBBvU9HqSxAcoMEqxOMBKr+UCX6Pqwc4hMB0fQXFme16EdanVAv2ocuGX7VwmZl3WPCVj41AtLN5Xg7OcmbAgMBAAECgYAMxHMzq0sYmUlVRCKeaZsthkSTaGTRqEnXNx77ECUla9XFcmpbsBE5zT5Kupu7C7VinIg5CKRejI0NDX94sFOLvOClyPu1mXnFS9IJCt/6TQ1HVtWraNv8X58OZBRmvQ91bNp9iUcEHnHn8cpAT5DdlqVWnrKrqCjX30VlsOj/eQJBAPT9iOz1VrwGEfydp5pq0bw2upch//JgR2JyoW9MJk/EKqUBVRVif+JVQ/ajesN8WJmDnh1ZL3wkf6zHKob2JwUCQQCMGIhG5XsPf4xlk5nzyX/p0+ls1y2Y+lviXsoV/09MQYYbsZCIEXNArjmB8Y+qsXn8ThIaQAbvfD8wfU4ki9AfAkEAjsbbb82jmLyo6uIudW3fgaMbp0ynT2gQ8i0ALE7i3QXkHHnkTiwzf4JVs32e5CKpt/3evhfl9qGGzvjbrf/yyQJALoc/S3yPwHf2Iw5AhU0Y5Iny7qkQhcwwlCAzMdcXeRYR+kSg4fAZvROgGd4mfuRuxTMQpBM7unIjcnFLcKvWtQJBANp47J8TYDcEkSVhh8b5e8QbMprW3uizjRyHNl8mpxGc+gBs92nEBhzsPK8q/JF+EdzhXRUSezPNJ5qLQnvlCbY=";
+//        // v4
+//        consumerId = "91e0052d-edc4-4505-8b8a-9734d2927504";
+//        privateEncodedStr = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAJcNb2qPB6aQo7rS8adhRMg8H+X0GvWPfc8MKqVYrwc4qbsXfMbKCoQmMYtzPJUMIyAuz1sG9bjdsLe4ewME6ZKm6OwJlMM/lfWe15jS84lGCo7xjP6leyqtKdy1c8dug01JMIeelgXfUdne6dY+BeeFlmwCcLkjp3p4en2F60ndAgMBAAECgYB7dEyaX7nWBaL7n0pIDbSEnrdHXwHlrtgZL41vRBMRKNt4ANNHOXvs07Zsjct22cufkwKAGCkeZXn4Pfuz1QD8TKLWjPIcW/oGHxuLZCHA5n2Tv/bFI6yDWDix1nR29xLia22ec/2CsFQex9zvc9AhGJcRdrXqSrQcDHbUC5EmlQJBAMWj3YpN1eM1lmxHL8vK7WJcNqaJD+GKpBAfvXavU/ma7g4zaT4QIby9BwkC/6ibmAGRYicX/OcHIfH328f1dQ8CQQDDp+Oreo7Le1UESCSgYGTn4T6bGMjnzlQ5rNxouXYLZxsAsuKi3IxfE0qPYMJ6U9kHzUMupmuCbYcFiwRqgEpTAkAI+9jfJ4iYamArDdVTWycNOInXahWJuAabIQY4teGIUA2QIbAf/RW7gZAnTbaXUHNJZvViN4nsanuVhyG7ZiHrAkAD0kOgFcS0NLR0YPRWLYvK+5s9bD6ASIdcmQO1B+pGTr04RkYm6CfVs4rBQiKKQRj8DgZB4v42je0VLqHncpoBAkAOpNImRlyUo09kocjdiG7xWpCTYfa8ocbIFvaeIPL7mi0zZ6LNqs2Oi0oKAxZqZfUgRWt8vY8YmkSjtuiONf87";
+//    
 //    }
 //
 //    public static void main(String[] args)
 //    {
-//         //fetchOrders("?createdStartDate=2017-06-01");
+//        // fetchOrders("?createdStartDate=2017-06-01");
 //        // fetchOrders("4578560812607");
 //        // cancellingOrder("2578560832984");//2578560832984
 //        // refund("4578560812607");
 //        // shippingUpdates(s);
-//         acknowledgeOrder("");
+//        // acknowledgeOrder("");
 //        // String []str=new String[]{"1578561281346,1,1Z2EX0530392577961"};
 //        // List<Data> list1 = new ArrayList<Data>();
 //        // List<Data> list2 = new ArrayList<Data>();
@@ -171,7 +160,7 @@ package test;
 //        // list3.add(new Data(sku, amount + "", "USD"));
 //        // }
 //
-//       // getFeedsv3();
+//        // getFeedsv3();
 //        // retireItem("test001");
 //        // getFeedItems();
 //        // updateProductIdOrSku();
@@ -182,9 +171,35 @@ package test;
 //
 //        // updatePrice("OM3-MPO-8LC-10M(1pc)","USD","77.97");//WEM5307 WEM5323
 //        // updateBulkPrices(list2);
-////         getPromotionalPrices("ASF-GE-T(Ubiquiti-1pc)");
+//        // getPromotionalPrices("ASF-GE-T(Ubiquiti-1pc)");
 //        // UpdatePromotionalPrice();
 //        // updateBulkPromotionalprices(list3);
+//
+//        // getReport("item");
+//        // getReport("buybox");
+//        // getReport("cpa");
+//    }
+//
+//    private static void getReport(String type)
+//    {
+//        String finalUrl = "https://marketplace.walmartapis.com/v2/getReport?type=" + type;
+//        String requestMethod = "GET";
+//        HttpClientHelper httpClient = createHttpClient(finalUrl, requestMethod);
+//
+//        System.out.println(finalUrl);
+//        try
+//        {
+//            byte[] buffer = httpClient.doHttpGetAndSaveFile(finalUrl);
+//            File file = new File("C:\\Users\\dev003\\Desktop\\" + type + ".zip");
+//            FileOutputStream fos = new FileOutputStream(file);
+//            fos.write(buffer);
+//            fos.flush();
+//            fos.close();
+//
+//        }
+//        catch (Exception e)
+//        {
+//        }
 //    }
 //
 //    private static void getFeedsv3()
@@ -474,10 +489,12 @@ package test;
 //        System.out.println(finalUrl);
 //        try
 //        {
-//            //String xml = httpClient.doHttpGet(finalUrl);
-//            String xml =  readFileContent("C:\\Users\\dev003\\Desktop\\2.xml");
+//            // String xml = httpClient.doHttpGet(finalUrl);
+//            String xml = readFileContent("C:\\Users\\dev003\\Desktop\\2.xml");
 //            System.out.println(xml);
-//            xml=xml.replace("<payload xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:type=\"ns2:itemPriceType\">", "<payload>");
+//            xml = xml.replace(
+//                    "<payload xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:type=\"ns2:itemPriceType\">",
+//                    "<payload>");
 //            ServiceResponse res = JAXBUtil.converyToJavaBean(xml, ServiceResponse.class);
 //        }
 //        catch (Exception e)
@@ -493,16 +510,16 @@ package test;
 //        {
 //            String fileName = "C:\\Users\\dev003\\Desktop\\walmart.xlsx";
 //            ExcelReportFileReaderWriterUtil excelUtil = new ExcelReportFileReaderWriterUtil();
-//            List<? extends Reportable> dataList = excelUtil.readReportFile(BaseCsvable.class, fileName, 0);
-//            if (dataList.size() <= 0)
-//            {
-//                return;
-//            }
-//            MPItemFeed mpItemFeed = ConversionMPItemFeedv3.bildMPItemFeed(dataList, "ElectronicsAccessories");
+//            //List<? extends Reportable> dataList = excelUtil.readReportFile(BaseCsvable.class, fileName, 0);
+//            //if (dataList.size() <= 0)
+//            //{
+//            //    return;
+//            //}
+//            //MPItemFeed mpItemFeed = ConversionMPItemFeedv3.bildMPItemFeed(dataList, "ElectronicsAccessories");
 //
 //            // filterSuccess(mpItemFeed, "2B5B93549F3D41C585B6D13DEC957559@AQMBAQA");
 //
-//            uploadSku(mpItemFeed);
+//            //uploadSku(mpItemFeed);
 //            System.out.println();
 //        }
 //        catch (Exception e)
@@ -1168,4 +1185,4 @@ package test;
 //        return nameValuePair;
 //    }
 //
-//}
+}

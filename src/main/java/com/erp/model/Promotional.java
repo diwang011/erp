@@ -1,9 +1,11 @@
 package com.erp.model;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.erp.biz.util.FieldNameAndHeaderMapping;
+import com.erp.biz.util.Helper;
 import com.erp.biz.util.Reportable;
 
 public class Promotional implements Reportable
@@ -11,8 +13,10 @@ public class Promotional implements Reportable
     private String sku;
     private String currentPrice;
     private String comparisonPrice;
-    private String effectiveDate;
-    private String expirationDate;
+    private String effectiveString;
+    private String expirationString;
+    private Date effectiveDate;
+    private Date expirationDate;
     private String priceType;
     private String promoId;
     private FieldNameAndHeaderMapping fieldHeaderMapping = null;
@@ -47,22 +51,50 @@ public class Promotional implements Reportable
         this.comparisonPrice = comparisonPrice;
     }
 
-    public String getEffectiveDate()
+    public String getEffectiveString()
+    {
+        if (effectiveDate != null)
+        {
+            return Helper.convertUTCToString(effectiveDate);
+        }
+        return effectiveString;
+    }
+
+    public void setEffectiveString(String effectiveString)
+    {
+        this.effectiveString = effectiveString;
+    }
+
+    public String getExpirationString()
+    {
+        if (expirationDate != null)
+        {
+            return Helper.convertUTCToString(expirationDate);
+        }
+        return expirationString;
+    }
+
+    public void setExpirationString(String expirationString)
+    {
+        this.expirationString = expirationString;
+    }
+
+    public Date getEffectiveDate()
     {
         return effectiveDate;
     }
 
-    public void setEffectiveDate(String effectiveDate)
+    public void setEffectiveDate(Date effectiveDate)
     {
         this.effectiveDate = effectiveDate;
     }
 
-    public String getExpirationDate()
+    public Date getExpirationDate()
     {
         return expirationDate;
     }
 
-    public void setExpirationDate(String expirationDate)
+    public void setExpirationDate(Date expirationDate)
     {
         this.expirationDate = expirationDate;
     }
@@ -77,6 +109,16 @@ public class Promotional implements Reportable
         this.priceType = priceType;
     }
 
+    public FieldNameAndHeaderMapping getFieldHeaderMapping()
+    {
+        return fieldHeaderMapping;
+    }
+
+    public void setFieldHeaderMapping(FieldNameAndHeaderMapping fieldHeaderMapping)
+    {
+        this.fieldHeaderMapping = fieldHeaderMapping;
+    }
+
     public Promotional()
     {
     }
@@ -88,8 +130,8 @@ public class Promotional implements Reportable
         this.sku = sku;
         this.currentPrice = currentPrice;
         this.comparisonPrice = comparisonPrice;
-        this.effectiveDate = effectiveDate;
-        this.expirationDate = expirationDate;
+        this.effectiveString = effectiveDate;
+        this.expirationString = expirationDate;
         this.priceType = priceType;
         this.promoId = promoId;
     }

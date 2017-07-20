@@ -376,7 +376,10 @@ public abstract class Helper
         {
             return null;
         }
-        value = value.substring(0, value.indexOf("."));
+        if (value.indexOf(".")!=-1)
+        {
+            value = value.substring(0, value.indexOf("."));
+        }
         BigInteger i = new BigInteger(value);
         return i;
     }

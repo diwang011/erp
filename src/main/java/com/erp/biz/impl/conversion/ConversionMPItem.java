@@ -46,6 +46,13 @@ public class ConversionMPItem
                     .setSportAndRecreationOther(ConversionSportAndRecreationOther.buldSportAndRecreationOther(row));
             category.setSportAndRecreation(sportAndRecreation);
         }
+        if (oo instanceof OfficeTable)
+        {
+            OfficeTable row = (OfficeTable) oo;
+            OfficeCategory officeCategory = new OfficeCategory();
+            officeCategory.setOffice(ConversionOffice.buldOffice(row));
+            category.setOfficeCategory(officeCategory);
+        }
         return category;
     }
 
@@ -161,8 +168,8 @@ public class ConversionMPItem
         mpOffer.setShippingOverrides(bildShippingOverrides(shippingOverrideAction, shippingOverrideIsShippingAlloweds,
                 shippingOverrideShipMethods, shippingOverrideshipPrices, shippingOverrideShipRegions));
         mpOffer.setShipsInOriginalPackaging(shipsInOriginalPackaging);
-        mpOffer.setStartDate(Helper.convertToXMLGregorianCalendarByString(startDate));
-        mpOffer.setEndDate(Helper.convertToXMLGregorianCalendarByString(endDate));
+        mpOffer.setStartDate(startDate);
+        mpOffer.setEndDate(endDate);
         return mpOffer;
     }
 

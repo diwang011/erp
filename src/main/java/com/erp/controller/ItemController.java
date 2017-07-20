@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.erp.biz.IItemBizService;
 import com.erp.common.Common;
 import com.erp.db.model.Item;
+import com.erp.db.model.UserInfo;
 import com.erp.model.Promotional;
 import com.erp.view.model.ViewItem;
 
@@ -32,7 +33,7 @@ import com.erp.view.model.ViewItem;
  *
  */
 @Controller
-@RequestMapping("/walmartapp/item")
+@RequestMapping("/item")
 public class ItemController extends BaseController
 {
     private static final Logger LOGGER = LogManager.getLogger(ItemController.class);
@@ -45,8 +46,8 @@ public class ItemController extends BaseController
     {
         LOGGER.info("item search start");
         BaseResponse<List<ViewItem>> response = new BaseResponse<List<ViewItem>>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             List<Item> item = null;
             List<ViewItem> viewItems = new ArrayList<>();
@@ -55,8 +56,8 @@ public class ItemController extends BaseController
             {
                 String sku = request.getData();
                 Integer offset = request.getOffset();
-                total = itemBizService.count(sku, userId);
-                item = itemBizService.list(sku, offset, userId);
+                total = itemBizService.count(sku, user);
+                item = itemBizService.list(sku, offset, user);
                 for (Item item2 : item)
                 {
                     ViewItem viewItem = new ViewItem();
@@ -89,8 +90,8 @@ public class ItemController extends BaseController
     {
         LOGGER.info("item updateItem start");
         BaseResponse<Boolean> response = new BaseResponse<Boolean>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             Boolean item = Boolean.FALSE;
             String sku = null;
@@ -101,7 +102,7 @@ public class ItemController extends BaseController
                 {
                     sku = data;
                 }
-                item = itemBizService.saveItem(sku, userId);
+                item = itemBizService.saveItem(sku, user);
             }
             catch (Exception e)
             {
@@ -123,14 +124,14 @@ public class ItemController extends BaseController
     {
         LOGGER.info("item retireItem start");
         BaseResponse<Boolean> response = new BaseResponse<Boolean>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             Boolean item = Boolean.FALSE;
             try
             {
                 String sku = request.getData();
-                item = itemBizService.retireItem(sku, userId);
+                item = itemBizService.retireItem(sku, user);
             }
             catch (Exception e)
             {
@@ -152,14 +153,14 @@ public class ItemController extends BaseController
     {
         LOGGER.info("item updatePrice start");
         BaseResponse<Boolean> response = new BaseResponse<Boolean>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             Boolean it = Boolean.FALSE;
             try
             {
                 Item item = request.getData();
-                it = itemBizService.updatePrice(item, userId);
+                it = itemBizService.updatePrice(item, user);
             }
             catch (Exception e)
             {
@@ -181,14 +182,14 @@ public class ItemController extends BaseController
     {
         LOGGER.info("item updateInventory start");
         BaseResponse<Boolean> response = new BaseResponse<Boolean>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             Boolean it = Boolean.FALSE;
             try
             {
                 Item item = request.getData();
-                it = itemBizService.updateInventory(item, userId);
+                it = itemBizService.updateInventory(item, user);
             }
             catch (Exception e)
             {
@@ -210,14 +211,14 @@ public class ItemController extends BaseController
     {
         LOGGER.info("item addPromotion start");
         BaseResponse<Boolean> response = new BaseResponse<Boolean>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             Boolean it = Boolean.FALSE;
             try
             {
                 Promotional promotional = request.getData();
-                it = itemBizService.addPromotion(promotional, userId);
+                it = itemBizService.addPromotion(promotional, user);
             }
             catch (Exception e)
             {
@@ -240,13 +241,13 @@ public class ItemController extends BaseController
     {
         LOGGER.info("item bulkAddPromotion start");
         BaseResponse<Boolean> response = new BaseResponse<Boolean>();
-        Integer userId = getUserByToken(token);
-        if (userId != null)
+        UserInfo user = getUserByToken(token);
+        if (user != null)
         {
             Boolean it = Boolean.FALSE;
             try
             {
-                it = itemBizService.bulkAddPromotion(file, userId);
+                it = itemBizService.bulkAddPromotion(file, user);
             }
             catch (Exception e)
             {
@@ -266,21 +267,21 @@ public class ItemController extends BaseController
     @RequestMapping(value = "/deletePromotion", method = RequestMethod.POST)
     public @ResponseBody BaseResponse<Boolean> deletePromotion(@RequestBody BaseRequest<String> request)
     {
-        LOGGER.info("item addPromotion start");
+        LOGGER.info("item deletePromotion start");
         BaseResponse<Boolean> response = new BaseResponse<Boolean>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             Boolean it = Boolean.FALSE;
             try
             {
                 String sku = request.getData();
-                it = itemBizService.deletePromotion(sku, userId);
+                it = itemBizService.deletePromotion(sku, user);
             }
             catch (Exception e)
             {
                 LOGGER.error(e);
-                response.setError("add Promotion error," + e.getMessage());
+                response.setError("Cancel Promotion error," + e.getMessage());
             }
             response.setData(it);
         }
@@ -288,7 +289,7 @@ public class ItemController extends BaseController
         {
             response.setError("Token Failure");
         }
-        LOGGER.info("item addPromotion end");
+        LOGGER.info("item deletePromotion end");
         return response;
     }
 
@@ -297,14 +298,14 @@ public class ItemController extends BaseController
     {
         LOGGER.info("item getPromotion start");
         BaseResponse<Promotional> response = new BaseResponse<Promotional>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             Promotional res = null;
             try
             {
                 String sku = request.getData();
-                res = itemBizService.getPromotion(sku, userId);
+                res = itemBizService.getPromotion(sku, user);
             }
             catch (Exception e)
             {
@@ -327,13 +328,13 @@ public class ItemController extends BaseController
     {
         LOGGER.info("item updateBulkPrice start");
         BaseResponse<String> response = new BaseResponse<String>();
-        Integer userId = getUserByToken(token);
-        if (userId != null)
+        UserInfo user = getUserByToken(token);
+        if (user != null)
         {
             String res = null;
             try
             {
-                res = itemBizService.updateBulkPrice(file, userId);
+                res = itemBizService.updateBulkPrice(file, user);
             }
             catch (Exception e)
             {
@@ -356,13 +357,13 @@ public class ItemController extends BaseController
     {
         LOGGER.info("item updateInventory start");
         BaseResponse<String> response = new BaseResponse<String>();
-        Integer userId = getUserByToken(token);
-        if (userId != null)
+        UserInfo user = getUserByToken(token);
+        if (user != null)
         {
             String res = null;
             try
             {
-                res = itemBizService.updateBulkInventory(file, userId);
+                res = itemBizService.updateBulkInventory(file, user);
             }
             catch (Exception e)
             {
@@ -384,14 +385,14 @@ public class ItemController extends BaseController
     {
         LOGGER.info("item exportPrice start");
         BaseResponse<String> response = new BaseResponse<String>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             String res = null;
             try
             {
                 String sku = request.getData();
-                res = itemBizService.exportPrice(sku, userId);
+                res = itemBizService.exportPrice(sku, user);
             }
             catch (Exception e)
             {
@@ -413,14 +414,14 @@ public class ItemController extends BaseController
     {
         LOGGER.info("item exportInventory start");
         BaseResponse<String> response = new BaseResponse<String>();
-        Integer userId = getUserByToken(request.getToken());
-        if (userId != null)
+        UserInfo user = getUserByToken(request.getToken());
+        if (user != null)
         {
             String res = null;
             try
             {
                 String sku = request.getData();
-                res = itemBizService.exportInventory(sku, userId);
+                res = itemBizService.exportInventory(sku, user);
             }
             catch (Exception e)
             {

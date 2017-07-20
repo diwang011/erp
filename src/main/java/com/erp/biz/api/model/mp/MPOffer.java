@@ -121,9 +121,9 @@ public class MPOffer {
     @XmlElement(name = "MinimumAdvertisedPrice")
     protected BigDecimal minimumAdvertisedPrice;
     @XmlElement(name = "StartDate")
-    protected XMLGregorianCalendar startDate;
+    protected String startDate;
     @XmlElement(name = "EndDate")
-    protected XMLGregorianCalendar endDate;
+    protected String endDate;
     @XmlElement(name = "MustShipAlone")
     protected String mustShipAlone;
     @XmlElement(name = "ShippingWeight", required = true)
@@ -191,7 +191,7 @@ public class MPOffer {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
@@ -203,7 +203,7 @@ public class MPOffer {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setStartDate(XMLGregorianCalendar value) {
+    public void setStartDate(String value) {
         this.startDate = value;
     }
 
@@ -215,7 +215,7 @@ public class MPOffer {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public XMLGregorianCalendar getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
@@ -227,7 +227,7 @@ public class MPOffer {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setEndDate(XMLGregorianCalendar value) {
+    public void setEndDate(String value) {
         this.endDate = value;
     }
 

@@ -46,7 +46,7 @@ public class Data
 
     public String getSku()
     {
-        return sku.replace(" ", "%20");
+        return sku;
     }
 
     public void setSku(String sku)

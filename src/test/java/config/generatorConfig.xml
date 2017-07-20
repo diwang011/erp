@@ -15,33 +15,42 @@
 		<javaClientGenerator targetPackage="com.erp.db.mapper"
 			targetProject="erp/src/main/java/" type="XMLMAPPER" />
 
-<!-- 		<table schema="test" tableName="userinfo" -->
-<!--             domainObjectName="UserInfo"> -->
-<!--             <property name="useActualColumnNames" value="true" /> -->
-<!--             <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
-<!--         </table> -->
-        
-		<table schema="test" tableName="item"
-            domainObjectName="Item">
-            <property name="useActualColumnNames" value="true" />
-            <generatedKey column="id" sqlStatement="MySql" identity="true" />
-        </table>
-        
-<!--         <table schema="test" tableName="orderitem" -->
-<!--             domainObjectName="OrderItem"> -->
-<!--             <property name="useActualColumnNames" value="true" /> -->
-<!--             <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
-<!--         </table> -->
-<!--         <table schema="test" tableName="feed" -->
-<!--             domainObjectName="Feed"> -->
-<!--             <property name="useActualColumnNames" value="true" /> -->
-<!--             <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
-<!--         </table> -->
-        
-<!--         <table schema="test" tableName="orders" -->
-<!--             domainObjectName="Orders"> -->
-<!--             <property name="useActualColumnNames" value="true" /> -->
-<!--             <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
-<!--         </table> -->
+		<!-- <table schema="test" tableName="userinfo" -->
+		<!-- domainObjectName="UserInfo"> -->
+		<!-- <property name="useActualColumnNames" value="true" /> -->
+		<!-- <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
+		<!-- </table> -->
+
+		<!-- <table schema="test" tableName="item" -->
+		<!-- domainObjectName="Item"> -->
+		<!-- <property name="useActualColumnNames" value="true" /> -->
+		<!-- <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
+		<!-- </table> -->
+
+		<table schema="test" tableName="orderitem" domainObjectName="OrderItem">
+			<property name="useActualColumnNames" value="true" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>
+
+		<!-- <table schema="test" tableName="feed" -->
+		<!-- domainObjectName="Feed"> -->
+		<!-- <property name="useActualColumnNames" value="true" /> -->
+		<!-- <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
+		<!-- </table> -->
+
+		<!-- <table schema="test" tableName="orders" domainObjectName="Orders"> -->
+		<!-- <property name="useActualColumnNames" value="true" /> -->
+		<!-- <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
+		<!-- </table> -->
+
+		<!-- <table schema="test" tableName="charges" domainObjectName="Charges"> -->
+		<!-- <property name="useActualColumnNames" value="true" /> -->
+		<!-- <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
+		<!-- </table> -->
+
+		<!-- <table schema="test" tableName="shippinginfo" domainObjectName="ShippingInfo"> -->
+		<!-- <property name="useActualColumnNames" value="true" /> -->
+		<!-- <generatedKey column="id" sqlStatement="MySql" identity="true" /> -->
+		<!-- </table> -->
 	</context>
 </generatorConfiguration>

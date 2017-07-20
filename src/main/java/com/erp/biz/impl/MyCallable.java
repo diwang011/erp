@@ -4,40 +4,32 @@ import java.util.concurrent.Callable;
 
 import com.erp.biz.api.handle.InventoryHandele;
 import com.erp.biz.api.model.inventory.Inventory;
+import com.erp.db.model.UserInfo;
 
 public class MyCallable implements Callable<Inventory>
 {
-    private String consumerId;
-    private String privateEncodedStr;
+    private UserInfo user;
+    private InventoryHandele inventoryHandele;
     private String sku;
 
-    public MyCallable(String consumerId, String privateEncodedStr, String sku)
+    public MyCallable(UserInfo user, InventoryHandele inventoryHandele, String sku)
     {
-        this.consumerId = consumerId;
-        this.privateEncodedStr = privateEncodedStr;
+        this.user = user;
+        this.inventoryHandele = inventoryHandele;
         this.sku = sku;
     }
 
     @Override
     public Inventory call() throws Exception
     {
-        InventoryHandele inventoryHandele = new InventoryHandele(consumerId, privateEncodedStr);
         Inventory inv = null;
         try
         {
-            inv = inventoryHandele.getInventoryForItem(sku);
+            inv = inventoryHandele.getInventoryForItem(sku, user);
         }
         catch (Exception e)
         {
-            try
-            {
-                inv = inventoryHandele.getInventoryForItem(sku);
-            }
-            catch (Exception e1)
-            {
-
-            }
-
+            inv = inventoryHandele.getInventoryForItem(sku, user);
         }
         return inv;
     }

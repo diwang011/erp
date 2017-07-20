@@ -16,4 +16,6 @@ public interface IOrderItemService extends IBaseService<OrderItem, Integer>
 
     public List<OrderItem> listByOrderId(Integer orderId);
 
+    public int deleteByOrderId(Integer orderId);
+
 }

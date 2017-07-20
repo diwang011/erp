@@ -20,7 +20,7 @@ public class ViewOrderItem
     private Long statusDate;
     private String lineNumber;
     
-    private String status;
+    private String orderStatus;
     private String trackingInfo;
     
     private List<ViewCharge> charges;
@@ -531,14 +531,15 @@ public class ViewOrderItem
         this.statusDate = statusDate;
     }
 
-    public String getStatus()
+
+    public String getOrderStatus()
     {
-        return status;
+        return orderStatus;
     }
 
-    public void setStatus(String status)
+    public void setOrderStatus(String orderStatus)
     {
-        this.status = status;
+        this.orderStatus = orderStatus;
     }
 
     public String getTrackingInfo()

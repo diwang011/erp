@@ -1,6 +1,6 @@
 package com.erp.model;
 
-public class TrackingInfo
+public class TrackingInfo extends OrderCondition
 {
     private String purchaseOrderId;
     private String trackingNumber;

@@ -44,10 +44,10 @@ public class BaseResponse<T>
             {
                 error = error + ", please login again...";
             }
-            else
-            {
-                error = error + ", please try again...";
-            }
+//            else
+//            {
+//                error = error + ", please try again...";
+//            }
 
         }
         return error;

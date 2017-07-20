@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.erp.biz.IFeedBizService;
-import com.erp.biz.api.handle.BaseCsvable;
-import com.erp.biz.api.handle.ConversionMPItemFeedv3;
 import com.erp.biz.api.handle.FeedHandele;
 import com.erp.biz.api.handle.ItemHandele;
 import com.erp.biz.api.model.mp.MPItemFeed;
@@ -42,28 +40,28 @@ public class FeedBizServiceImpl extends BaseBizService implements IFeedBizServic
 {
     @Resource
     private IFeedService feedService;
+    @Resource
+    private ItemHandele itemHandele;
+    @Resource
+    private FeedHandele feedHandele;
 
     @Override
-    public Boolean saveFeed(String feedId, Integer userId) throws Exception
+    public Boolean saveFeed(String feedId, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null)
         {
             return false;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
-        FeedHandele FeedHandele = new FeedHandele(consumerId, privateEncodedStr);
         FeedRecordResponse res = null;
         try
         {
-            res = FeedHandele.getFeedsv3(feedId);
+            res = feedHandele.getFeedsv3(feedId, user);
         }
         catch (Exception e)
         {
             try
             {
-                res = FeedHandele.getFeedsv3(feedId);
+                res = feedHandele.getFeedsv3(feedId, user);
             }
             catch (Exception e1)
             {
@@ -79,8 +77,8 @@ public class FeedBizServiceImpl extends BaseBizService implements IFeedBizServic
         {
             Feed oo = null;
             int i = 0;
-            feedService.deleteByUserIdAndFeedId(feed.getFeedId(), userId);
-            oo = copyBean(feed, userId);
+            feedService.deleteByUserIdAndFeedId(feed.getFeedId(), user.getId());
+            oo = copyBean(feed, user.getId());
             i = feedService.insert(oo);
             if (i != 1)
             {
@@ -108,27 +106,15 @@ public class FeedBizServiceImpl extends BaseBizService implements IFeedBizServic
     }
 
     @Override
-    public FeedDetail getFeedDetail(String feedId, Integer userId) throws Exception
+    public FeedDetail getFeedDetail(String feedId, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null || StringUtils.isEmpty(feedId))
         {
             return null;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
         PartnerFeedResponse res = null;
-        try
-        {
-            FeedHandele feedHandele = new FeedHandele(consumerId, privateEncodedStr);
-            res = feedHandele.getFeedsv3ByFeedId(feedId);
-        }
-        catch (Exception e)
-        {
-            throw e;
-
-        }
-        saveFeed(feedId, userId);
+        res = feedHandele.getFeedsv3ByFeedId(feedId, user);
+        saveFeed(feedId, user);
         FeedDetail detail = conversionPartnerFeedResponse(res);
         return detail;
     }
@@ -152,6 +138,7 @@ public class FeedBizServiceImpl extends BaseBizService implements IFeedBizServic
                 ingestionErrors += ingestionError.getDescription();
             }
             item.setIngestionErrors(ingestionErrors);
+            item.setIngestionStatus(partnerItemIngestionStatus.getIngestionStatus().name());
             itemDetails.add(item);
         }
         detail.setItemDetails(itemDetails);
@@ -159,21 +146,15 @@ public class FeedBizServiceImpl extends BaseBizService implements IFeedBizServic
     }
 
     @Override
-    public String uploadItem(MultipartFile multipartFile, Integer userId) throws Exception
+    public String uploadItem(MultipartFile multipartFile, UserInfo user) throws Exception
     {
-        UserInfo user = getUserById(userId);
         if (user == null)
         {
             return null;
         }
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
         FeedAcknowledgement res = null;
         try
         {
-            ItemHandele itemHandele = new ItemHandele(consumerId, privateEncodedStr);
-            // List<BaseCsvable> dataList = readXlsContent(multipartFile, BaseCsvable.class);
-            // MPItemFeed mpItemFeed = ConversionMPItemFeedv3.bildMPItemFeed(dataList, "ElectronicsAccessories");
             String fileName = multipartFile.getOriginalFilename();
             if (fileName != null)
             {
@@ -182,7 +163,7 @@ public class FeedBizServiceImpl extends BaseBizService implements IFeedBizServic
             List<List<Object>> dataList = readXlsmContent(multipartFile);
             MPItemFeed mpItemFeed = ConversionMPItem.bildMPItemFeed(dataList, fileName);
 
-            res = itemHandele.uploadSku(mpItemFeed);
+            res = itemHandele.uploadSku(mpItemFeed, user);
         }
         catch (Exception e)
         {
@@ -193,21 +174,21 @@ public class FeedBizServiceImpl extends BaseBizService implements IFeedBizServic
         if (res != null)
         {
             feedId = res.getFeedId();
-            saveFeed(feedId, userId);
+            saveFeed(feedId, user);
         }
         return feedId;
     }
 
     @Override
-    public List<Feed> list(String feedId, Integer offset, Integer userId)
+    public List<Feed> list(String feedId, Integer offset, UserInfo user)
     {
-        return feedService.list(feedId, offset, userId);
+        return feedService.list(feedId, offset, user.getId());
     }
 
     @Override
-    public Integer count(String feedId, Integer userId)
+    public Integer count(String feedId, UserInfo user)
     {
-        return feedService.count(feedId, userId);
+        return feedService.count(feedId, user.getId());
     }
 
 }

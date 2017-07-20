@@ -19,7 +19,6 @@ import javax.annotation.Resource;
  *
  */
 @Controller
-@RequestMapping("/walmartapp")
 public class LoginController extends BaseController
 {
     private static final Logger LOGGER = LogManager.getLogger(LoginController.class);

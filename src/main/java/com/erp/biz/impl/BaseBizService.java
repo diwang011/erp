@@ -7,35 +7,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import com.erp.biz.util.ExcelReportFileReaderWriterUtil;
 import com.erp.biz.util.ReadExcelUtil;
 import com.erp.biz.util.Reportable;
 import com.erp.common.Common;
-import com.erp.db.model.UserInfo;
-import com.erp.db.service.IUserInfoService;
 
 public abstract class BaseBizService
 {
-    @Resource
-    private IUserInfoService userInfoService;
-
-    protected UserInfo getUserById(Integer userId)
-    {
-        UserInfo user = null;
-        try
-        {
-            user = userInfoService.queryById(userId);
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
-        return user;
-    }
 
     protected <T extends Reportable> List<T> readXlsContent(MultipartFile multipartFile, Class<T> csvClazz)
     {

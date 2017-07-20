@@ -29,9 +29,11 @@ import java.util.UUID;
 @Transactional(rollbackFor = { Exception.class })
 public class UserInfoServiceImpl implements IUserInfoService
 {
-    private Map<String, Integer> userMap;
+    private Map<String, UserInfo> userMap;
     @Resource
     private UserInfoMapper userInfoMapper;
+    @Resource
+    private FeedHandele feedHandele;
 
     @Override
     public int insert(UserInfo entity)
@@ -73,25 +75,25 @@ public class UserInfoServiceImpl implements IUserInfoService
         List<UserInfo> users = userInfoMapper.selectByExample(example);
         if (users.size() > 0)
         {
-            userMap = new HashMap<String, Integer>();
+            userMap = new HashMap<String, UserInfo>();
             UserInfo u = users.get(0);
             token = UUID.randomUUID().toString().replaceAll("-", "");
-            for (Entry<String, Integer> map : userMap.entrySet())
+            for (Entry<String, UserInfo> map : userMap.entrySet())
             {
-                Integer id = map.getValue();
+                Integer id = map.getValue().getId();
                 String key = map.getKey();
                 if (id == u.getId())
                 {
                     userMap.remove(key);
                 }
             }
-            userMap.put(token, u.getId());
+            userMap.put(token, u);
         }
         return token;
     }
 
     @Override
-    public Integer getUserByToken(String token)
+    public UserInfo getUserByToken(String token)
     {
         if (userMap == null)
         {
@@ -103,13 +105,10 @@ public class UserInfoServiceImpl implements IUserInfoService
     @Override
     public String register(UserInfo user) throws Exception
     {
-        String consumerId = user.getConsumerId();
-        String privateEncodedStr = user.getPrivateKey();
-        FeedHandele FeedHandele = new FeedHandele(consumerId, privateEncodedStr);
         FeedRecordResponse res = null;
         try
         {
-            res = FeedHandele.getFeedsv3(null);
+            res = feedHandele.getFeedsv3(null, user);
         }
         catch (Exception e1)
         {

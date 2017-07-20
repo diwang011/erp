@@ -12,6 +12,7 @@ import org.apache.axis.utils.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.erp.db.model.UserInfo;
 import com.erp.db.service.IUserInfoService;
 
 public abstract class BaseController
@@ -20,7 +21,7 @@ public abstract class BaseController
     @Resource
     private IUserInfoService userInfoService;
 
-    protected Integer getUserByToken(String token)
+    protected UserInfo getUserByToken(String token)
     {
         if (StringUtils.isEmpty(token))
         {
